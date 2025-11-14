@@ -1,0 +1,27 @@
+[
+  {
+    "context": "Naidu is a senior Cloud Computing student at BITS Pilani. He has a GPA of 8.4 and is part of the AI research group.",
+    "question": "What is Naidu's GPA?",
+    "answers": { "text": ["8.4"], "answer_start": [60] }
+  },
+  {
+    "context": "Aakib participates in the Cloud Computing club at BITS Pilani. He completed an internship on Kubernetes management.",
+    "question": "Where did Aakib complete his internship?",
+    "answers": { "text": ["Kubernetes management"], "answer_start": [56] }
+  },
+  {
+    "context": "Naveen graduated last semester from BITS Pilani with a degree in Cloud Computing. He published a paper on serverless architectures.",
+    "question": "What degree did Naveen earn?",
+    "answers": { "text": ["Cloud Computing"], "answer_start": [52] }
+  },
+  {
+    "context": "Darsh maintains a 7.8 GPA while actively contributing to open source cloud security projects at BITS Pilani.",
+    "question": "What is Darsh's GPA?",
+    "answers": { "text": ["7.8"], "answer_start": [17] }
+  },
+  {
+    "context": "Bhanu is enrolled in the Cloud Computing program at BITS Pilani and is known for excellence in container orchestration technology.",
+    "question": "What technology is Bhanu known for?",
+    "answers": { "text": ["container orchestration technology"], "answer_start": [84] }
+  }
+]

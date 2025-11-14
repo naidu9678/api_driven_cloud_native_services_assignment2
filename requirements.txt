@@ -1,0 +1,25 @@
+# Core Streamlit and Computer Vision (CV) Libraries
+streamlit
+Pillow
+pytesseract
+opencv-python-headless  # Used by some CV operations (YOLO/Tesseract setup)
+ultralytics
+
+# --- Deep Learning/NLP/Hugging Face Libraries for Flan-T5 Fallback ---
+torch
+transformers
+sentencepiece  # Often a dependency for T5 tokenizers
+
+# --- LangChain and Google GenAI Integration ---
+langchain-community
+langchain-core
+langchain-text-splitters
+langchain-google-genai
+
+
+# Environment setup
+python-dotenv
+
+# Vector Store and PDF Loader dependencies
+faiss-cpu  # For FAISS vector store on CPU (use faiss-gpu for GPU)
+pypdf  # Dependency for PyPDFLoader
