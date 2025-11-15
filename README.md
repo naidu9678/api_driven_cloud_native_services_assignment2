@@ -37,7 +37,7 @@ Multimodal, API-driven assistant built for CC ZG506 – Assignment II. The pro
 ---
 
 ### HD Architecture Diagram
-- Mermaid source: `docs/architecture_diagram.mmd`  
+- Mermaid source: `docs/architecture_diagram.mmd` 
 
 ---
 

@@ -3,15 +3,15 @@
 
 flowchart LR
     subgraph Client
-        U[User Browser<br/>(Streamlit UI)]
+        U["User Browser\n(Streamlit UI)"]
     end
 
-    subgraph App["Streamlit App (chatbot.py)"]
+    subgraph App["Streamlit App\n(chatbot.py)"]
         DM[Document Manager]
         MODE{Mode Selector}
         QNA[Q&A RAG Chain]
-        GRADE[Assignment Grading<br/>CV + LLM]
-        EDU[Summaries & QGen]
+        GRADE["Assignment Grading\nCV + LLM"]
+        EDU["Summaries & QGen"]
         DIAG[Diagram Explainer]
     end
 
@@ -24,7 +24,7 @@ flowchart LR
     subgraph Services
         GEM[Google Gemini 2.5 Flash]
         EMB[text-embedding-004]
-        FLAN[Flan-T5 Fallback<br/>Hugging Face]
+        FLAN["Flan-T5 Fallback\n(Hugging Face)"]
         YOLO[YOLOv8n Weights]
         OCR[Tesseract OCR]
     end
