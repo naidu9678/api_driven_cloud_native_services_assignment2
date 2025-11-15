@@ -1,0 +1,59 @@
+%% BITS Pilani Smart AI Assistant – HD Architecture Diagram
+%% Render with: npx @mermaid-js/mermaid-cli -i docs/architecture_diagram.mmd -o docs/architecture_diagram.png
+
+flowchart LR
+    subgraph Client
+        U[User Browser<br/>(Streamlit UI)]
+    end
+
+    subgraph App["Streamlit App (chatbot.py)"]
+        DM[Document Manager]
+        MODE{Mode Selector}
+        QNA[Q&A RAG Chain]
+        GRADE[Assignment Grading<br/>CV + LLM]
+        EDU[Summaries & QGen]
+        DIAG[Diagram Explainer]
+    end
+
+    subgraph Storage
+        PDF[(PDF Uploads)]
+        FAISS[(FAISS Index)]
+        LOGS[(Structured Logs)]
+    end
+
+    subgraph Services
+        GEM[Google Gemini 2.5 Flash]
+        EMB[text-embedding-004]
+        FLAN[Flan-T5 Fallback<br/>Hugging Face]
+        YOLO[YOLOv8n Weights]
+        OCR[Tesseract OCR]
+    end
+
+    U --> DM
+    DM --> PDF --> DM
+    DM --> EMB --> FAISS
+    MODE --> QNA
+    MODE --> GRADE
+    MODE --> EDU
+    MODE --> DIAG
+
+    QNA --> FAISS --> QNA
+    QNA --> GEM
+    QNA --> FLAN
+    QNA --> LOGS
+
+    GRADE --> OCR
+    GRADE --> GEM
+    GRADE --> LOGS
+
+    EDU --> FAISS
+    EDU --> GEM
+    EDU --> FLAN
+    EDU --> LOGS
+
+    DIAG --> YOLO
+    DIAG --> OCR
+    DIAG --> FAISS
+    DIAG --> GEM
+    DIAG --> LOGS
+
