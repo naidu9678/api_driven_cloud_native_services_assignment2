@@ -1,59 +1,71 @@
-%% BITS Pilani Smart AI Assistant – HD Architecture Diagram
+%% BITS Pilani Smart AI Assistant – Overall Architecture Diagram
 %% Render with: npx @mermaid-js/mermaid-cli -i docs/architecture_diagram.mmd -o docs/architecture_diagram.png
 
-flowchart LR
-    subgraph Client
-        U["User Browser\n(Streamlit UI)"]
+flowchart TB
+    subgraph UI["Frontend – Streamlit Application (Python)"]
+        Sidebar["Sidebar\n(File Upload, Mode Selection)"]
+        MainContent["Main Content Area\n(Chat, Results, Visuals)"]
+        Session["Session State & Handlers"]
+        ModeLogic["Mode Logic & Helper Functions"]
     end
 
-    subgraph App["Streamlit App\n(chatbot.py)"]
-        DM[Document Manager]
-        MODE{Mode Selector}
-        QNA[Q&A RAG Chain]
-        GRADE["Assignment Grading\nCV + LLM"]
-        EDU["Summaries & QGen"]
-        DIAG[Diagram Explainer]
+    subgraph Pipeline["Processing & Retrieval Pipeline"]
+        Upload["User Uploaded Files\n(PDFs, Images)"]
+        OCRProc["OCR Processing\n(pdf_loader.py / pytesseract)"]
+        Vector["FAISS Index Files\n(.faiss, .pkl)"]
+        Query["Search Query / Prompts"]
+        Docs["Retrieved Documents\n(Text Chunks)"]
     end
 
-    subgraph Storage
-        PDF[(PDF Uploads)]
-        FAISS[(FAISS Index)]
-        LOGS[(Structured Logs)]
+    subgraph Integrations["Backend Logic & Integrations"]
+        LangChain["LangChain Orchestration\n(retrievers, chains)"]
+        Gemini["Google GenAI\n(Embeddings + Gemini LLM)"]
+        Tesseract["Tesseract OCR Engine"]
+        YOLO["YOLOv8n\n(Diagram Detection)"]
+        Flan["Flan-T5 Fallback\n(Hugging Face)"]
     end
 
-    subgraph Services
-        GEM[Google Gemini 2.5 Flash]
-        EMB[text-embedding-004]
-        FLAN["Flan-T5 Fallback\n(Hugging Face)"]
-        YOLO[YOLOv8n Weights]
-        OCR[Tesseract OCR]
+    subgraph Modes["Streamlit Modes / Features"]
+        RagMode["Q&A (Text RAG)"]
+        GradeMode["Assignment Grading\n(CV + LLM)"]
+        EduMode["Educational Tools\n(Summary & QGen)"]
+        DiagramMode["Diagram Explanation\n(CV + RAG)"]
     end
 
-    U --> DM
-    DM --> PDF --> DM
-    DM --> EMB --> FAISS
-    MODE --> QNA
-    MODE --> GRADE
-    MODE --> EDU
-    MODE --> DIAG
+    %% UI interactions
+    Sidebar --> Upload
+    Sidebar --> ModeLogic
+    MainContent --> Session
+    Session --> ModeLogic
+    ModeLogic --> Modes
 
-    QNA --> FAISS --> QNA
-    QNA --> GEM
-    QNA --> FLAN
-    QNA --> LOGS
+    %% Pipeline connections
+    Upload --> OCRProc --> Docs
+    Upload --> Vector
+    Docs --> Query
+    Query --> LangChain
+    Vector --> LangChain
+    LangChain --> Gemini
+    LangChain --> Flan
+    LangChain --> Tesseract
+    LangChain --> YOLO
 
-    GRADE --> OCR
-    GRADE --> GEM
-    GRADE --> LOGS
+    %% Mode to pipeline/service mapping
+    RagMode --> LangChain
+    RagMode --> Gemini
+    RagMode --> Flan
+    RagMode --> Vector
 
-    EDU --> FAISS
-    EDU --> GEM
-    EDU --> FLAN
-    EDU --> LOGS
+    GradeMode --> Tesseract
+    GradeMode --> Gemini
+    GradeMode --> LangChain
 
-    DIAG --> YOLO
-    DIAG --> OCR
-    DIAG --> FAISS
-    DIAG --> GEM
-    DIAG --> LOGS
+    EduMode --> LangChain
+    EduMode --> Gemini
+    EduMode --> Flan
+    EduMode --> Vector
 
+    DiagramMode --> YOLO
+    DiagramMode --> Tesseract
+    DiagramMode --> LangChain
+    DiagramMode --> Gemini

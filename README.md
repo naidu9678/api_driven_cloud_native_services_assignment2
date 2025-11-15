@@ -37,7 +37,75 @@ Multimodal, API-driven assistant built for CC ZG506 – Assignment II. The pro
 ---
 
 ### HD Architecture Diagram
-- Mermaid source: `docs/architecture_diagram.mmd` 
+- Displayed inline below (Mermaid). Source of truth lives at `docs/architecture_diagram.mmd`.
+
+```mermaid
+flowchart TB
+    subgraph UI["Frontend – Streamlit Application (Python)"]
+        Sidebar["Sidebar\n(File Upload, Mode Selection)"]
+        MainContent["Main Content Area\n(Chat, Results, Visuals)"]
+        Session["Session State & Handlers"]
+        ModeLogic["Mode Logic & Helper Functions"]
+    end
+
+    subgraph Pipeline["Processing & Retrieval Pipeline"]
+        Upload["User Uploaded Files\n(PDFs, Images)"]
+        OCRProc["OCR Processing\n(pdf_loader.py / pytesseract)"]
+        Vector["FAISS Index Files\n(.faiss, .pkl)"]
+        Query["Search Query / Prompts"]
+        Docs["Retrieved Documents\n(Text Chunks)"]
+    end
+
+    subgraph Integrations["Backend Logic & Integrations"]
+        LangChain["LangChain Orchestration\n(retrievers, chains)"]
+        Gemini["Google GenAI\n(Embeddings + Gemini LLM)"]
+        Tesseract["Tesseract OCR Engine"]
+        YOLO["YOLOv8n\n(Diagram Detection)"]
+        Flan["Flan-T5 Fallback\n(Hugging Face)"]
+    end
+
+    subgraph Modes["Streamlit Modes / Features"]
+        RagMode["Q&A (Text RAG)"]
+        GradeMode["Assignment Grading\n(CV + LLM)"]
+        EduMode["Educational Tools\n(Summary & QGen)"]
+        DiagramMode["Diagram Explanation\n(CV + RAG)"]
+    end
+
+    Sidebar --> Upload
+    Sidebar --> ModeLogic
+    MainContent --> Session
+    Session --> ModeLogic
+    ModeLogic --> Modes
+
+    Upload --> OCRProc --> Docs
+    Upload --> Vector
+    Docs --> Query
+    Query --> LangChain
+    Vector --> LangChain
+    LangChain --> Gemini
+    LangChain --> Flan
+    LangChain --> Tesseract
+    LangChain --> YOLO
+
+    RagMode --> LangChain
+    RagMode --> Gemini
+    RagMode --> Flan
+    RagMode --> Vector
+
+    GradeMode --> Tesseract
+    GradeMode --> Gemini
+    GradeMode --> LangChain
+
+    EduMode --> LangChain
+    EduMode --> Gemini
+    EduMode --> Flan
+    EduMode --> Vector
+
+    DiagramMode --> YOLO
+    DiagramMode --> Tesseract
+    DiagramMode --> LangChain
+    DiagramMode --> Gemini
+```
 
 ---
 
